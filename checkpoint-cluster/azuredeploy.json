@@ -30,7 +30,7 @@
         "R7730BYOL",
         "R7730PAYG"
       ],
-      "defaultValue": "R7730BYOL",
+      "defaultValue": "R7730PAYG",
       "metadata": {
         "description": "Offer version and type"
       },
@@ -50,23 +50,13 @@
       "type": "string"
     },
     "vmSize": {
-      "defaultValue": "Standard_D3",
+      "defaultValue": "Standard_DS4_v2",
       "allowedValues": [
-        "Standard_A4",
-        "Standard_A7",
-        "Standard_A9",
-        "Standard_A11",
-        "Standard_D3",
-        "Standard_D4",
-        "Standard_D12",
-        "Standard_D13",
-        "Standard_D14",
-        "Standard_D3_v2",
-        "Standard_D4_v2",
-        "Standard_D5_v2",
-        "Standard_D12_v2",
-        "Standard_D13_v2",
-        "Standard_D14_v2"
+        "Standard_DS4_v2",
+        "Standard_DS5_v2",
+        "Standard_DS13_v2",
+        "Standard_DS14_v2",
+        "Standard_DS15_v2"
       ],
       "metadata": {
         "description": "Size of the VM"
@@ -112,10 +102,15 @@
       "version": "latest"
     },
     "lbId": "[resourceId('Microsoft.Network/loadBalancers', variables('lbName'))]",
-    "lbName": "frontend-lb",
-    "nic1Name": "external",
-    "nic2Name": "int0",
-    "nic3Name": "int1",
+    "lbName": "ZTO-CP-FW-EXT-LB",
+    "nic1Name": "ZTO-CP-FW-EXT-NIC",
+    "nic2Name": "ZTO-CP-GATEWAY-NIC",
+    "nic3Name": "ZTO-CP-CLIENT-DMZ-NIC",
+    "nic4Name": "ZTO-CP-AD-DMZ-NIC",
+    "nic5Name": "ZTO-CP-FUTURE-DMZ-NIC",
+    "nic6Name": "ZTO-CP-EXT-DMZ-NIC",
+    "nic7Name": "ZTO-CP-SVC-DMZ-NIC",
+    "nic8Name": "ZTO-CP-INT-DMZ-NIC",
     "linuxConfigurationpassword": {},
     "linuxConfigurationsshPublicKey": {
       "disablePasswordAuthentication": "true",
@@ -140,34 +135,74 @@
       "product": "[variables('imageOffer')]",
       "publisher": "[variables('imagePublisher')]"
     },
-    "storageAccountType": "Standard_LRS",
-    "vnetName": "vnet",
+    "storageAccountType": "Premium_LRS",
+    "vnetName": "ZTO-VNET",
     "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', variables('vnetName'))]",
-    "addressPrefix": "10.0.0.0/16",
-    "subnet1Name": "Frontend",
-    "subnet1Prefix": "10.0.1.0/24",
+    "addressPrefix": "10.11.32.0/20",
+    "subnet1Name": "ZTO-CP-FW-EXT",
+    "subnet1Prefix": "10.0.32.128/25",
     "subnet1Id": "[concat(variables('vnetId'), '/subnets/', variables('subnet1Name'))]",
-    "subnet2Name": "Web",
-    "subnet2Prefix": "10.0.2.0/24",
+    "subnet2Name": "ZTO-CP-GATEWAY",
+    "subnet2Prefix": "10.11.32.0/26",
     "subnet2Id": "[concat(variables('vnetId'), '/subnets/', variables('subnet2Name'))]",
-    "subnet3Name": "App",
-    "subnet3Prefix": "10.0.3.0/24",
+    "subnet3Name": "ZTO-CP-CLIENT-DMZ",
+    "subnet3Prefix": "10.11.32.64/26",
     "subnet3Id": "[concat(variables('vnetId'), '/subnets/', variables('subnet3Name'))]",
+    "subnet4Name": "ZTO-CP-AD-DMZ",
+    "subnet4Prefix": "10.11.33.0/24",
+    "subnet4Id": "[concat(variables('vnetId'), '/subnets/', variables('subnet4Name'))]",
+    "subnet5Name": "ZTO-CP-FUTURE-DMZ",
+    "subnet5Prefix": "10.11.34.0/23",
+    "subnet5Id": "[concat(variables('vnetId'), '/subnets/', variables('subnet5Name'))]",
+    "subnet6Name": "ZTO-CP-EXT-DMZ",
+    "subnet6Prefix": "10.11.36.0/23",
+    "subnet6Id": "[concat(variables('vnetId'), '/subnets/', variables('subnet6Name'))]",
+    "subnet7Name": "ZTO-CP-SVC-DMZ",
+    "subnet7Prefix": "10.11.38.0/23",
+    "subnet7Id": "[concat(variables('vnetId'), '/subnets/', variables('subnet7Name'))]",
+    "subnet8Name": "ZTO-CP-INT-DMZ",
+    "subnet8Prefix": "10.11.40.0/21",
+    "subnet8Id": "[concat(variables('vnetId'), '/subnets/', variables('subnet8Name'))]",
     "externalPrivateAddresses": [
-      "10.0.1.10",
-      "10.0.1.20"
+      "10.0.32.132",
+      "10.0.32.133"
     ],
     "subnet2PrivateAddresses": [
-      "10.0.2.10",
-      "10.0.2.20"
+      "10.0.32.4",
+      "10.0.32.5"
     ],
     "subnet3PrivateAddresses": [
-      "10.0.3.10",
-      "10.0.3.20"
+      "10.0.32.68",
+      "10.0.32.69"
+    ],
+    "subnet4PrivateAddresses": [
+      "10.0.33.4",
+      "10.0.33.5"
+    ],
+    "subnet5PrivateAddresses": [
+      "10.0.34.4",
+      "10.0.34.5"
+    ],
+    "subnet6PrivateAddresses": [
+      "10.0.36.4",
+      "10.0.36.5"
+    ],
+    "subnet7PrivateAddresses": [
+      "10.0.38.4",
+      "10.0.38.5"
+    ],
+    "subnet8PrivateAddresses": [
+      "10.0.40.4",
+      "10.0.40.5"
     ],
     "frontendRouteTableId": "[resourceId('Microsoft.Network/routeTables', variables('subnet1Name'))]",
     "subnet2RouteTableId": "[resourceId('Microsoft.Network/routeTables', variables('subnet2Name'))]",
     "subnet3RouteTableId": "[resourceId('Microsoft.Network/routeTables', variables('subnet3Name'))]",
+    "subnet4RouteTableId": "[resourceId('Microsoft.Network/routeTables', variables('subnet4Name'))]",
+    "subnet5RouteTableId": "[resourceId('Microsoft.Network/routeTables', variables('subnet5Name'))]",
+    "subnet6RouteTableId": "[resourceId('Microsoft.Network/routeTables', variables('subnet6Name'))]",
+    "subnet7RouteTableId": "[resourceId('Microsoft.Network/routeTables', variables('subnet7Name'))]",
+    "subnet8RouteTableId": "[resourceId('Microsoft.Network/routeTables', variables('subnet8Name'))]",
     "publicIPAddressName": "[parameters('clusterName')]",
     "publicIPAddressId": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddressName'))]",
     "publicIPAddressName1": "[concat(parameters('clusterName'), 1)]",
@@ -277,6 +312,171 @@
       }
     },
     {
+      "type": "Microsoft.Network/routeTables",
+      "apiVersion": "[variables('apiVersion')]",
+      "location": "[resourceGroup().location]",
+      "name": "[variables('subnet4Name')]",
+      "properties": {
+        "routes": [
+          {
+            "name": "Local-Subnet",
+            "properties": {
+              "addressPrefix": "[variables('subnet4Prefix')]",
+              "nextHopType": "VnetLocal"
+            }
+          },
+          {
+            "name": "Inside-Vnet",
+            "properties": {
+              "addressPrefix": "[variables('addressPrefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[variables('subnet4PrivateAddresses')[0]]"
+            }
+          },
+          {
+            "name": "To-Internet",
+            "properties": {
+              "addressPrefix": "0.0.0.0/0",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[variables('subnet4PrivateAddresses')[0]]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/routeTables",
+      "apiVersion": "[variables('apiVersion')]",
+      "location": "[resourceGroup().location]",
+      "name": "[variables('subnet5Name')]",
+      "properties": {
+        "routes": [
+          {
+            "name": "Local-Subnet",
+            "properties": {
+              "addressPrefix": "[variables('subnet5Prefix')]",
+              "nextHopType": "VnetLocal"
+            }
+          },
+          {
+            "name": "Inside-Vnet",
+            "properties": {
+              "addressPrefix": "[variables('addressPrefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[variables('subnet5PrivateAddresses')[0]]"
+            }
+          },
+          {
+            "name": "To-Internet",
+            "properties": {
+              "addressPrefix": "0.0.0.0/0",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[variables('subnet5PrivateAddresses')[0]]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/routeTables",
+      "apiVersion": "[variables('apiVersion')]",
+      "location": "[resourceGroup().location]",
+      "name": "[variables('subnet6Name')]",
+      "properties": {
+        "routes": [
+          {
+            "name": "Local-Subnet",
+            "properties": {
+              "addressPrefix": "[variables('subnet6Prefix')]",
+              "nextHopType": "VnetLocal"
+            }
+          },
+          {
+            "name": "Inside-Vnet",
+            "properties": {
+              "addressPrefix": "[variables('addressPrefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[variables('subnet6PrivateAddresses')[0]]"
+            }
+          },
+          {
+            "name": "To-Internet",
+            "properties": {
+              "addressPrefix": "0.0.0.0/0",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[variables('subnet6PrivateAddresses')[0]]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/routeTables",
+      "apiVersion": "[variables('apiVersion')]",
+      "location": "[resourceGroup().location]",
+      "name": "[variables('subnet7Name')]",
+      "properties": {
+        "routes": [
+          {
+            "name": "Local-Subnet",
+            "properties": {
+              "addressPrefix": "[variables('subnet7Prefix')]",
+              "nextHopType": "VnetLocal"
+            }
+          },
+          {
+            "name": "Inside-Vnet",
+            "properties": {
+              "addressPrefix": "[variables('addressPrefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[variables('subnet7PrivateAddresses')[0]]"
+            }
+          },
+          {
+            "name": "To-Internet",
+            "properties": {
+              "addressPrefix": "0.0.0.0/0",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[variables('subnet7PrivateAddresses')[0]]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/routeTables",
+      "apiVersion": "[variables('apiVersion')]",
+      "location": "[resourceGroup().location]",
+      "name": "[variables('subnet8Name')]",
+      "properties": {
+        "routes": [
+          {
+            "name": "Local-Subnet",
+            "properties": {
+              "addressPrefix": "[variables('subnet8Prefix')]",
+              "nextHopType": "VnetLocal"
+            }
+          },
+          {
+            "name": "Inside-Vnet",
+            "properties": {
+              "addressPrefix": "[variables('addressPrefix')]",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[variables('subnet8PrivateAddresses')[0]]"
+            }
+          },
+          {
+            "name": "To-Internet",
+            "properties": {
+              "addressPrefix": "0.0.0.0/0",
+              "nextHopType": "VirtualAppliance",
+              "nextHopIpAddress": "[variables('subnet8PrivateAddresses')[0]]"
+            }
+          }
+        ]
+      }
+    },
+    {
       "type": "Microsoft.Storage/storageAccounts",
       "apiVersion": "[variables('apiVersion')]",
       "location": "[resourceGroup().location]",
@@ -299,7 +499,12 @@
       "dependsOn": [
         "[variables('frontendRouteTableId')]",
         "[variables('subnet2RouteTableId')]",
-        "[variables('subnet3RouteTableId')]"
+        "[variables('subnet3RouteTableId')]",
+        "[variables('subnet4RouteTableId')]",
+        "[variables('subnet5RouteTableId')]",
+        "[variables('subnet6RouteTableId')]",
+        "[variables('subnet7RouteTableId')]",
+        "[variables('subnet8RouteTableId')]"
       ],
       "properties": {
         "addressSpace": {
@@ -332,6 +537,51 @@
               "addressPrefix": "[variables('subnet3Prefix')]",
               "routeTable": {
                 "id": "[variables('subnet3RouteTableId')]"
+              }
+            }
+          },
+          {
+            "name": "[variables('subnet4Name')]",
+            "properties": {
+              "addressPrefix": "[variables('subnet4Prefix')]",
+              "routeTable": {
+                "id": "[variables('subnet4RouteTableId')]"
+              }
+            }
+          },
+          {
+            "name": "[variables('subnet5Name')]",
+            "properties": {
+              "addressPrefix": "[variables('subnet5Prefix')]",
+              "routeTable": {
+                "id": "[variables('subnet5RouteTableId')]"
+              }
+            }
+          },
+          {
+            "name": "[variables('subnet6Name')]",
+            "properties": {
+              "addressPrefix": "[variables('subnet6Prefix')]",
+              "routeTable": {
+                "id": "[variables('subnet6RouteTableId')]"
+              }
+            }
+          },
+          {
+            "name": "[variables('subnet7Name')]",
+            "properties": {
+              "addressPrefix": "[variables('subnet7Prefix')]",
+              "routeTable": {
+                "id": "[variables('subnet7RouteTableId')]"
+              }
+            }
+          },
+          {
+            "name": "[variables('subnet8Name')]",
+            "properties": {
+              "addressPrefix": "[variables('subnet8Prefix')]",
+              "routeTable": {
+                "id": "[variables('subnet8RouteTableId')]"
               }
             }
           }
@@ -736,6 +986,146 @@
         ]
       }
     },
+        {
+      "type": "Microsoft.Network/networkInterfaces",
+      "apiVersion": "[variables('apiVersion')]",
+      "dependsOn": [
+        "[variables('vnetId')]"
+      ],
+      "location": "[resourceGroup().location]",
+      "name": "[concat(variables('nic4Name'), '-', copyIndex(1))]",
+      "copy": {
+        "name": "interface4Copy",
+        "count": "[variables('count')]"
+      },
+      "properties": {
+        "enableIPForwarding": true,
+        "ipConfigurations": [
+          {
+            "name": "ipconfig4",
+            "properties": {
+              "privateIPAddress": "[variables('subnet4PrivateAddresses')[copyIndex(0)]]",
+              "privateIPAllocationMethod": "Static",
+              "subnet": {
+                "id": "[variables('subnet3Id')]"
+              }
+            }
+          }
+        ]
+      }
+    },
+        {
+      "type": "Microsoft.Network/networkInterfaces",
+      "apiVersion": "[variables('apiVersion')]",
+      "dependsOn": [
+        "[variables('vnetId')]"
+      ],
+      "location": "[resourceGroup().location]",
+      "name": "[concat(variables('nic5Name'), '-', copyIndex(1))]",
+      "copy": {
+        "name": "interface5Copy",
+        "count": "[variables('count')]"
+      },
+      "properties": {
+        "enableIPForwarding": true,
+        "ipConfigurations": [
+          {
+            "name": "ipconfig5",
+            "properties": {
+              "privateIPAddress": "[variables('subnet5PrivateAddresses')[copyIndex(0)]]",
+              "privateIPAllocationMethod": "Static",
+              "subnet": {
+                "id": "[variables('subnet3Id')]"
+              }
+            }
+          }
+        ]
+      }
+    },
+        {
+      "type": "Microsoft.Network/networkInterfaces",
+      "apiVersion": "[variables('apiVersion')]",
+      "dependsOn": [
+        "[variables('vnetId')]"
+      ],
+      "location": "[resourceGroup().location]",
+      "name": "[concat(variables('nic6Name'), '-', copyIndex(1))]",
+      "copy": {
+        "name": "interface6Copy",
+        "count": "[variables('count')]"
+      },
+      "properties": {
+        "enableIPForwarding": true,
+        "ipConfigurations": [
+          {
+            "name": "ipconfig6",
+            "properties": {
+              "privateIPAddress": "[variables('subnet6PrivateAddresses')[copyIndex(0)]]",
+              "privateIPAllocationMethod": "Static",
+              "subnet": {
+                "id": "[variables('subnet3Id')]"
+              }
+            }
+          }
+        ]
+      }
+    },
+        {
+      "type": "Microsoft.Network/networkInterfaces",
+      "apiVersion": "[variables('apiVersion')]",
+      "dependsOn": [
+        "[variables('vnetId')]"
+      ],
+      "location": "[resourceGroup().location]",
+      "name": "[concat(variables('nic7Name'), '-', copyIndex(1))]",
+      "copy": {
+        "name": "interface7Copy",
+        "count": "[variables('count')]"
+      },
+      "properties": {
+        "enableIPForwarding": true,
+        "ipConfigurations": [
+          {
+            "name": "ipconfig7",
+            "properties": {
+              "privateIPAddress": "[variables('subnet7PrivateAddresses')[copyIndex(0)]]",
+              "privateIPAllocationMethod": "Static",
+              "subnet": {
+                "id": "[variables('subnet3Id')]"
+              }
+            }
+          }
+        ]
+      }
+    },
+        {
+      "type": "Microsoft.Network/networkInterfaces",
+      "apiVersion": "[variables('apiVersion')]",
+      "dependsOn": [
+        "[variables('vnetId')]"
+      ],
+      "location": "[resourceGroup().location]",
+      "name": "[concat(variables('nic8Name'), '-', copyIndex(1))]",
+      "copy": {
+        "name": "interface8Copy",
+        "count": "[variables('count')]"
+      },
+      "properties": {
+        "enableIPForwarding": true,
+        "ipConfigurations": [
+          {
+            "name": "ipconfig8",
+            "properties": {
+              "privateIPAddress": "[variables('subnet8PrivateAddresses')[copyIndex(0)]]",
+              "privateIPAllocationMethod": "Static",
+              "subnet": {
+                "id": "[variables('subnet3Id')]"
+              }
+            }
+          }
+        ]
+      }
+    },
     {
       "type": "Microsoft.Compute/virtualMachines",
       "apiVersion": "[variables('apiVersion')]",
@@ -744,7 +1134,12 @@
         "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySetName'))]",
         "[concat('Microsoft.Network/networkInterfaces/', variables('nic1Name'), '-', copyIndex(1))]",
         "[concat('Microsoft.Network/networkInterfaces/', variables('nic2Name'), '-', copyIndex(1))]",
-        "[concat('Microsoft.Network/networkInterfaces/', variables('nic3Name'), '-', copyIndex(1))]"
+        "[concat('Microsoft.Network/networkInterfaces/', variables('nic3Name'), '-', copyIndex(1))]",
+        "[concat('Microsoft.Network/networkInterfaces/', variables('nic4Name'), '-', copyIndex(1))]",
+        "[concat('Microsoft.Network/networkInterfaces/', variables('nic5Name'), '-', copyIndex(1))]",
+        "[concat('Microsoft.Network/networkInterfaces/', variables('nic6Name'), '-', copyIndex(1))]",
+        "[concat('Microsoft.Network/networkInterfaces/', variables('nic7Name'), '-', copyIndex(1))]",
+        "[concat('Microsoft.Network/networkInterfaces/', variables('nic8Name'), '-', copyIndex(1))]"
       ],
       "location": "[resourceGroup().location]",
       "name": "[concat(parameters('clusterName'), copyIndex(1))]",
@@ -782,6 +1177,36 @@
             },
             {
               "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nic3Name'), '-', copyIndex(1)))]",
+              "properties": {
+                "primary": false
+              }
+            },
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nic4Name'), '-', copyIndex(1)))]",
+              "properties": {
+                "primary": false
+              }
+            },
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nic5Name'), '-', copyIndex(1)))]",
+              "properties": {
+                "primary": false
+              }
+            },
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nic6Name'), '-', copyIndex(1)))]",
+              "properties": {
+                "primary": false
+              }
+            },
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nic7Name'), '-', copyIndex(1)))]",
+              "properties": {
+                "primary": false
+              }
+            },
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nic8Name'), '-', copyIndex(1)))]",
               "properties": {
                 "primary": false
               }
